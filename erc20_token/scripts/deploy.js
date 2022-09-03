@@ -9,12 +9,12 @@ const hre = require("hardhat");
 async function main() {
 
   const TestCoin = await hre.ethers.getContractFactory("TestCoin");
-  const val = await hre.ethers.utils.parseEther(`100000000000000000`);
+  const val = await hre.ethers.utils.parseEther("1");
   const testcoin = await TestCoin.deploy({value: val});
   await testcoin.deployed();
 
   console.log(
-    `TestCoin deployed with TLV ${total}`
+    `TestCoin deployed with TLV ${val}`
   );
 }
 
