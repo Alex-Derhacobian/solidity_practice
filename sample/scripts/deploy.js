@@ -7,28 +7,20 @@
 const hre = require("hardhat");
 
 async function main() {
-  const AddressBook = await hre.ethers.getContractFactory("AddressBook");
-  const addressBook = await AddressBook.deploy();
+  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
+  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
+  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
 
-  const contractAddress = addressBook.address; 
-  const contract = await hre.ethers.getContractAt("AddressBook", contractAddress);
+  const lockedAmount = hre.ethers.utils.parseEther("1");
 
-  const accounts = hre.ethers.eth_
-  for (var i = 0; i < accounts.)
-  console.log(
-    accounts
-  );
-  
-  /*
-  await contract.addAddress()
-  const init_addresbook = await contract.getADdr
+  const Lock = await hre.ethers.getContractFactory("Lock");
+  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+
+  await lock.deployed();
 
   console.log(
-    `Address book deployed to ${addressBook.address}`
+    `Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
   );
-
-  await addressBook.addAddress(
-  */
 }
 
 // We recommend this pattern to be able to use async/await everywhere

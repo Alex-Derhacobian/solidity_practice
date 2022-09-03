@@ -7,28 +7,15 @@
 const hre = require("hardhat");
 
 async function main() {
-  const AddressBook = await hre.ethers.getContractFactory("AddressBook");
-  const addressBook = await AddressBook.deploy();
 
-  const contractAddress = addressBook.address; 
-  const contract = await hre.ethers.getContractAt("AddressBook", contractAddress);
-
-  const accounts = hre.ethers.eth_
-  for (var i = 0; i < accounts.)
-  console.log(
-    accounts
-  );
-  
-  /*
-  await contract.addAddress()
-  const init_addresbook = await contract.getADdr
+  const TestCoin = await hre.ethers.getContractFactory("TestCoin");
+  const val = await hre.ethers.utils.parseEther(`100000000000000000`);
+  const testcoin = await TestCoin.deploy({value: val});
+  await testcoin.deployed();
 
   console.log(
-    `Address book deployed to ${addressBook.address}`
+    `TestCoin deployed with TLV ${total}`
   );
-
-  await addressBook.addAddress(
-  */
 }
 
 // We recommend this pattern to be able to use async/await everywhere
