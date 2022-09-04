@@ -18,12 +18,21 @@ contract TestCoin is ERC20 {
     string public constant symbol = "TCN";
     string public constant name = "TestCoin"; 
     uint8 public constant decimals = 18; 
-    uint256 public constant total = 100000000000000000;
+    uint256 public constant total = 1000000000000000000;
+    address public owner; 
     mapping (address => uint256) public balances;
     mapping (address => mapping (address => uint256)) public approvals; 
 
     event Transfer(address indexed _to, address indexed _from, uint256 _amount); 
     event Approval(address indexed _owner, address indexed _spender, uint256 _value); 
+
+    constructor() payable {
+        owner = msg.sender;
+    }
+
+    function getOwner() public view returns (address) {
+        return owner; 
+    }
 
 
     function totalSupply() public pure returns (uint256) {

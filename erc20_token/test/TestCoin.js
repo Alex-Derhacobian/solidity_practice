@@ -16,16 +16,17 @@ describe("TestCoin", function () {
   // We use loadFixture to run this setup once, snapshot that state,
   // and reset Hardhat Network to that snapshot in every test.
   async function deployTestCoin() {
+    const [owner, otherAccount] = await ethers.getSigners(); 
     const TestCoin = await hre.ethers.getContractFactory("TestCoin");
     const val = await hre.ethers.utils.parseEther("1");
     const testcoin = await TestCoin.deploy({value: val});
     await testcoin.deployed();
-    const [owner, otherAccount] = await ethers.getSigners(); 
+    const accounts = await hre.network.provider.send("eth_accounts");
 
     console.log(
       `TestCoin deployed with TLV ${val}`
     );
-    return {testcoin, val, owner, otherAccount};
+    return {testcoin, val, owner, otherAccount, accounts};
 
     /*
     const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
@@ -49,33 +50,14 @@ describe("TestCoin", function () {
     it("Should have the correct TLV", async function () {
       const {testcoin, val} = await loadFixture(deployTestCoin);
 
-      expect(await testcoin.totalSupply()).to.equal(val);
+      expect(await testcoin.total()).to.equal(val);
     });
 
     it("Should set the right owner", async function () {
       const {testcoin, owner} = await loadFixture(deployTestCoin);
 
-      expect(await testcoin.creator).to.equal(owner.address);
-    });
-
-  /*
-    it("Should receive and store the funds to lock", async function () {
-      const { lock, lockedAmount } = await loadFixture(
-        deployOneYearLockFixture
-      );
-
-      expect(await ethers.provider.getBalance(lock.address)).to.equal(
-        lockedAmount
-      );
-    });
-
-    it("Should fail if the unlockTime is not in the future", async function () {
-      // We don't use the fixture here because we want a different deployment
-      const latestTime = await time.latest();
-      const Lock = await ethers.getContractFactory("Lock");
-      await expect(Lock.deploy(latestTime, { value: 1 })).to.be.revertedWith(
-        "Unlock time should be in the future"
-      );
+      console.log(`${String(owner.address)}`);
+      expect(await testcoin.getOwner()).to.equal(owner.address);
     });
   });
 
@@ -114,6 +96,7 @@ describe("TestCoin", function () {
         await expect(lock.withdraw()).not.to.be.reverted;
       });
     });
+    });
 
     describe("Events", function () {
       it("Should emit an event on withdrawals", async function () {
@@ -143,6 +126,4 @@ describe("TestCoin", function () {
         );
       });
     });
-    */
   });
-});
